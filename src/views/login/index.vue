@@ -48,8 +48,8 @@ export default {
       // 校验规则对象
       loginRules: {
         mobile: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' }
+          { required: true, message: '请输入手机号', trigger: 'change' },
+          { validator: checkMobile, trigger: 'change' }
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
