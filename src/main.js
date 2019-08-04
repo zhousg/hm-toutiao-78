@@ -12,7 +12,7 @@ import router from '@/router'
 // 导入样式
 import '@/styles/index.less'
 
-import axios from 'axios'
+import axios from '@/api'
 Vue.prototype.$http = axios
 
 // 产品级别提示  不开启  开发阶段 提示越详细越好  开发级别提示
