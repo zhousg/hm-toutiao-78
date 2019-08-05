@@ -13,6 +13,10 @@ import router from '@/router'
 import '@/styles/index.less'
 
 import axios from '@/api'
+
+import myPlugin from '@/components'
+Vue.use(myPlugin)
+
 Vue.prototype.$http = axios
 
 // 产品级别提示  不开启  开发阶段 提示越详细越好  开发级别提示

@@ -51,10 +51,7 @@
 </template>
 
 <script>
-import MyTest from '@/components/my-test'
-import MyBread from '@/components/my-bread'
 export default {
-  components: { MyTest, MyBread },
   data () {
     return {
       // 收集请求参数（表单数据）

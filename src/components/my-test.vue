@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  name: 'my-test',
   data () {
     return {
       msg: '组件内部数据'
