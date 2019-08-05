@@ -3,10 +3,7 @@
     <!-- 筛选区域 -->
     <el-card>
       <div slot="header" class="clearfix">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>内容管理</el-breadcrumb-item>
-        </el-breadcrumb>
+        <my-bread>粉丝管理</my-bread>
       </div>
       <el-form label-width="80px" size="small">
         <el-form-item label="状态：">
@@ -43,11 +40,21 @@
       </el-form>
     </el-card>
     <!-- 结果区域 -->
+    <my-test>
+      <!-- slot="content" 指定插槽的名称 -->
+      <!-- slot-scope="scope" 指定接收插槽传递过来的所有的自定义属性和值的集合数据（对象｛msg:'值'｝）-->
+      <!-- <div slot="content" slot-scope="scope">content 获取组件内部数据：{{scope.a}}</div> -->
+      <template v-slot:content="scope">content 获取组件内部数据：{{scope.a}}</template>
+      <div slot="footer">footer</div>
+    </my-test>
   </div>
 </template>
 
 <script>
+import MyTest from '@/components/my-test'
+import MyBread from '@/components/my-bread'
 export default {
+  components: { MyTest, MyBread },
   data () {
     return {
       // 收集请求参数（表单数据）
