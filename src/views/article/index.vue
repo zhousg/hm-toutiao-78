@@ -19,9 +19,9 @@
           <el-select v-model="reqParams.channel_id" placeholder="请选择">
             <el-option
               v-for="item in channelOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -40,13 +40,17 @@
       </el-form>
     </el-card>
     <!-- 结果区域 -->
-    <my-test>
-      <!-- slot="content" 指定插槽的名称 -->
-      <!-- slot-scope="scope" 指定接收插槽传递过来的所有的自定义属性和值的集合数据（对象｛msg:'值'｝）-->
-      <!-- <div slot="content" slot-scope="scope">content 获取组件内部数据：{{scope.a}}</div> -->
-      <template v-slot:content="scope">content 获取组件内部数据：{{scope.a}}</template>
-      <div slot="footer">footer</div>
-    </my-test>
+    <el-card>
+      <div slot="header">根据筛选条件共查询到 0 条结果：</div>
+      <!-- 表格组件 -->
+      <el-table :data="articles">
+        <el-table-column prop="id" label="编号"></el-table-column>
+      </el-table>
+      <!-- 分页组件 -->
+      <div style="text-align:center;margin-top:30px;">
+        <el-pagination background layout="prev, pager, next, total" :total="1000"></el-pagination>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -59,15 +63,41 @@ export default {
         status: null,
         channel_id: null,
         begin_pubdate: null,
-        end_pubdate: null
+        end_pubdate: null,
+        page: 1,
+        per_page: 20
       },
       // 频道下拉选项数据
-      channelOptions: [{ label: 'js', value: '1000' }],
+      channelOptions: [],
       // 日期数据
-      dateArr: []
+      dateArr: [],
+      // 文章列表数据
+      articles: []
+    }
+  },
+  created () {
+    // 获取频道下拉选项数据
+    this.getChannelOptions()
+    // 获取文章列表数据
+    this.getArticles()
+  },
+  methods: {
+    async getChannelOptions () {
+      const { data: { data } } = await this.$http.get('channels')
+      this.channelOptions = data.channels
+    },
+    async getArticles () {
+      // 请求方式是get  url?key=value&key1=value1... 如果有很多项麻烦
+      // 请求方式是get  第二个参数是一个对象 {params:指定参数对象}  便利
+      const { data: { data } } = await this.$http.get('articles', { params: this.reqParams })
+      this.articles = data.results
     }
   }
 }
 </script>
 
-<style scoped lang='less'></style>
+<style scoped lang='less'>
+.el-card {
+  margin-bottom: 20px;
+}
+</style>
