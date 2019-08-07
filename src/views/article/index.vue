@@ -68,7 +68,7 @@
         <el-table-column label="发布时间" prop="pubdate"></el-table-column>
         <el-table-column label="操作" width="120">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" plain circle></el-button>
+            <el-button type="primary" @click="edit(scope.row.id)" icon="el-icon-edit" plain circle></el-button>
             <el-button type="danger" @click="del(scope.row.id)" icon="el-icon-delete" plain circle></el-button>
           </template>
         </el-table-column>
@@ -134,6 +134,30 @@ export default {
     this.getArticles()
   },
   methods: {
+    // 编辑文章
+    edit (id) {
+      // 发布文章 和 编辑文章 使用的是同一个路由规则
+      // 如果是使用 params 是路径传参  /publish  /publish/1000  两个路由规则
+      // 使用 query 传参   /publish  /publish?id=10
+      this.$router.push('/publish?id=' + id)
+    },
+    // 删除文章
+    del (id) {
+      // 1. 弹出一个确认框
+      // 2. 点击确认  发起删除请求
+      // 3. 删除成功   提示   更新列表
+      this.$confirm('亲，此操作将永久删除该文章, 是否继续?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        await this.$http.delete(`articles/${id}`)
+        // 上面的请求确实成功了，响应的时候来到前端报错了，阻止下面程序的执行。
+        // 提示 更新列表
+        this.$message.success('删除文章成功')
+        this.getArticles()
+      }).catch(() => {})
+    },
     // 选择日期后函数
     changeDate (dateArr) {
       // dateArr [起始日期，结束日期]
