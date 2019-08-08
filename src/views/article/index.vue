@@ -16,14 +16,10 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-          <el-select v-model="reqParams.channel_id" clearable placeholder="请选择">
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+          <!-- 使用自己组件 -->
+          <!-- :value="reqParams.channel_id" -->
+          <!-- @input="reqParams.channel_id=数据" -->
+          <my-channel v-model="reqParams.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期：">
           <el-date-picker
@@ -99,14 +95,14 @@ export default {
       // 收集请求参数（表单数据）
       reqParams: {
         status: null,
-        channel_id: null,
+        channel_id: 4,
         begin_pubdate: null,
         end_pubdate: null,
         page: 1,
         per_page: 20
       },
       // 频道下拉选项数据
-      channelOptions: [],
+      // channelOptions: [],
       // 日期数据
       dateArr: [],
       // 文章列表数据
@@ -118,18 +114,18 @@ export default {
   // 计算属性 computed 当你需要一个新数据，依赖data中的数据得到，当data中的数据改变，计算属性也会改变。
   // 侦听器 watch 当你需要监听某个data数据改变，改变后做性能开销较大操作时（异步操作），也可以做其他事情。
   // 怎么监听数据
-  watch: {
-    // total (newVal, oldVal) {}
-    'reqParams.channel_id': function (newVal, oldVal) {
-      if (newVal === '') {
-        // axios不会将参数提交给后台
-        this.reqParams.channel_id = null
-      }
-    }
-  },
+  // watch: {
+  //   // total (newVal, oldVal) {}
+  //   'reqParams.channel_id': function (newVal, oldVal) {
+  //     if (newVal === '') {
+  //       // axios不会将参数提交给后台
+  //       this.reqParams.channel_id = null
+  //     }
+  //   }
+  // },
   created () {
     // 获取频道下拉选项数据
-    this.getChannelOptions()
+    // this.getChannelOptions()
     // 获取文章列表数据
     this.getArticles()
   },
@@ -182,12 +178,12 @@ export default {
       this.reqParams.page = newPage
       this.getArticles()
     },
-    async getChannelOptions () {
-      const {
-        data: { data }
-      } = await this.$http.get('channels')
-      this.channelOptions = data.channels
-    },
+    // async getChannelOptions () {
+    //   const {
+    //     data: { data }
+    //   } = await this.$http.get('channels')
+    //   this.channelOptions = data.channels
+    // },
     async getArticles () {
       // 请求方式是get  url?key=value&key1=value1... 如果有很多项麻烦
       // 请求方式是get  第二个参数是一个对象 {params:指定参数对象}  便利
